@@ -1,11 +1,24 @@
+FROM python:3.12 AS builder
+
+WORKDIR /app
+
+RUN python3 -m venv /venv
+ENV PATH='/venv/bin:$PATH'
+
+RUN --mount=type=cache,target=/root/.cache/pip \
+    --mount=type=bind,source=requirements.txt,target=requirements.txt \
+    pip install -r requirements.txt
+
+
 FROM python:3.12-slim
 
 WORKDIR /app
 
-COPY requirements.txt .
+COPY --from=builder /venv /venv
+ENV PATH="/venv/bin:$PATH"
 
-RUN pip install --no-cache-dir -r requirements.txt
+COPY . .
 
-COPY app ./app
+EXPOSE 8000
 
-CMD ["uvicorn", "app.main:app", "--host", "0.0.0.0", "--port", "80"]
+CMD ["/venv/bin/python3", "-m", "uvicorn", "app.main:app", "--host", "0.0.0.0", "--port", "8000"]

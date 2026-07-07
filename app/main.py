@@ -1,29 +1,26 @@
-from contextlib import asynccontextmanager
-
 from fastapi import FastAPI
-from app.routers import users
+from app.auth import users
 from app.routers import expenses
 import os
+from dotenv import load_dotenv
+from app.models import UserDB
 
+# ALGORITHM = settings.ALGORITHM
+# ACCESS_TOKEN_EXPIRE_MINUTES = settings.ACCESS_TOKEN_EXPIRE_MINUTES
+#
+# password_hash = PasswordHash.recommended()
+#
+# DUMMY_HASH = password_hash.hash('dummypassword')
+#
+# oauth2_scheme = OAuth2PasswordBearer(tokenUrl='token')
+load_dotenv()
 DATABASE_URL = os.getenv("DATABASE_URL")
+
+
 app = FastAPI()
 
-@app.get("/")
-def read_root():
-    return {"Hello": "World"}
-
-
-@app.get("/items/{item_id}")
-def read_item(item_id: int, q: str | None = None):
-    return {"item_id": item_id, "q": q}
-
-# Global reference for connection pool
-db_pool = None
-
-@asynccontextmanager
-async def lifespan(app:FastAPI):
-    global db_pool
-
+# def get_password_hash(password):
+#     return password_hash.hash(password)
 
 
 app.include_router(expenses.router)

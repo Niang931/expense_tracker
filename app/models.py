@@ -2,15 +2,14 @@ from pydantic import BaseModel
 from enum import Enum
 import datetime
 
-class UserBase(BaseModel):
-    username: str
 
-class UserCreate(UserBase):
+class UserCreate(BaseModel):
+    username: str
     password: str
 
-class UserDB(UserBase):
+class UserDB(BaseModel):
+    username: str
     hashed_password: str
-
 
 class Category(str, Enum):
     FOOD = 'food'
@@ -23,7 +22,7 @@ class Category(str, Enum):
 class ExpenseItem(BaseModel):
     amount: float
     expense_date:datetime.date = datetime.date.today()
-    category: Category = 'food'
+    category: Category = Category.FOOD
 
 class Token(BaseModel):
     access_token: str
@@ -31,4 +30,5 @@ class Token(BaseModel):
 
 class TokenData(BaseModel):
     username: str | None = None
+
 

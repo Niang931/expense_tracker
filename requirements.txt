@@ -1,2 +1,8 @@
 fastapi[standard]>=0.113.0,<0.114.0
 pydantic>=2.7.0,<3.0.0
+psycopg2-binary>=2.9
+uvicorn==0.34.3
+pyjwt>=2.10.0
+pwdlib>=0.2.1
+pydantic_settings>=2.14.0
+kivy>=2.1.0
